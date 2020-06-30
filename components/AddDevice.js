@@ -11,9 +11,9 @@ import {
     , TouchableOpacity
 } from 'react-native';
 import 'react-native-gesture-handler';
-import bgImage from './assets/background.jpg';
+import bgImage from '../assets/background.jpg';
 
-const { width: WIDTH } = Dimensions.get('window')
+const { width: WIDTH } = Dimensions.get('window');
 
 export default class AddDevice extends Component {
     static navigationOptions = {

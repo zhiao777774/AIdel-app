@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LoginPage from '../App'
 import {
     StyleSheet
     , Text
@@ -10,11 +9,11 @@ import {
     , Dimensions
     , TouchableOpacity
 } from 'react-native';
+import bgImage from '../assets/background.jpg';
+import logo from '../assets/icon.png';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const { width: WIDTH } = Dimensions.get('window')
-import bgImage from './assets/background.jpg'
-import logo from './assets/icon.png'
-import Icon from 'react-native-vector-icons/Ionicons'
+const { width: WIDTH } = Dimensions.get('window');
 
 export default class SignUpPage extends Component {
     constructor() {

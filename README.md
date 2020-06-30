@@ -1,1 +1,1 @@
-"# AIdel-app" 
+"AIdel 監護端App" 

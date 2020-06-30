@@ -10,9 +10,9 @@ import {
     , TouchableOpacity
 } from 'react-native';
 import 'react-native-gesture-handler';
-import bgImage from './assets/background.jpg'
-import logo from './assets/icon.png'
-import Icon from 'react-native-vector-icons/Ionicons'
+import bgImage from '../assets/background.jpg';
+import logo from '../assets/icon.png';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
