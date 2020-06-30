@@ -1,19 +1,20 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Component } from 'react';
+import 'react-native-gesture-handler';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack'
+import LoginPage from './components/LogIn';
+import SignUpPage from './components/signUp';
+import AddDvicePage from './components/AddDevice';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+export default class App extends Component {
+    render() {
+        return <AppContainer />;
+    }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+const AppNavigator = createStackNavigator({
+    LogIn: { screen: LoginPage },
+    SignUp: { screen: SignUpPage },
+    AddDevice: { screen: AddDvicePage },
 });
+const AppContainer = createAppContainer(AppNavigator);
