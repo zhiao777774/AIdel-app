@@ -10,11 +10,9 @@ import {
     , TouchableOpacity
 } from 'react-native';
 import 'react-native-gesture-handler';
-import bgImage from '../assets/background.jpg';
-import logo from '../assets/icon.png';
-import Icon from 'react-native-vector-icons/Ionicons';
-
-
+import bgImage from '../assets/background.jpg'
+import logo from '../assets/icon.png'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -31,7 +29,6 @@ export default class LoginPage extends Component {
         }
     }
 
-
     showPass = () => {
         if (this.state.press == false) {
             this.setState({ showPass: false, press: true })
@@ -39,7 +36,6 @@ export default class LoginPage extends Component {
             this.setState({ showPass: true, press: false })
         }
     }
-
 
     render() {
         const { navigate } = this.props.navigation;
@@ -79,16 +75,14 @@ export default class LoginPage extends Component {
                 <TouchableOpacity style={styles.buttonLogin} onPress={() => navigate('AddDevice')}>
                     <Text style={styles.text}>Login</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigate('SignUp')}>
-                    <Text style={styles.signUp}> Sign Up </Text>
+                <TouchableOpacity onPress={() => navigate('SingUp')}>
+                    <Text style={styles.singUp}> Sing Up </Text>
                 </TouchableOpacity>
             </ImageBackground>
         );
 
     }
 }
-
-
 
 
 const styles = StyleSheet.create({
@@ -151,7 +145,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center'
     },
-    signUp: {
+    singUp: {
         color: '#DAA520',
         fontSize: 12,
         textAlign: 'center',

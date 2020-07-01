@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import SideMenu from 'react-native-side-menu';
 import {
     StyleSheet
     , Text
@@ -11,34 +10,33 @@ import {
     , TouchableOpacity
 } from 'react-native';
 import 'react-native-gesture-handler';
+import { StackActions, NavigationActions } from 'react-navigation';
 import bgImage from '../assets/background.jpg';
 
-const { width: WIDTH } = Dimensions.get('window');
+const { width: WIDTH } = Dimensions.get('window')
 
 export default class AddDevice extends Component {
-    static navigationOptions = {
-        title: 'Add Device',
-    };
-
 
     render() {
-
         return (
+
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
                 <View>
-                    <TouchableOpacity style={styles.buttonAddDevice} >
+                    <TouchableOpacity style={styles.buttonAddDevice} onPress={() => {
+                        const resetAction = StackActions.reset({
+                            index: 0,
+                            actions: [NavigationActions.navigate({ routeName: 'Home' })],
+                        });
+                        this.props.navigation.dispatch(resetAction);
+                        //dispatch 清空stack
+                    }}>
                         <Text style={styles.AddDeviceText}> Add Deivce </Text>
                     </TouchableOpacity>
                 </View>
 
             </ImageBackground>
-
-
-
         );
-
     }
-
 }
 
 
@@ -63,5 +61,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 20,
     },
-
 });
