@@ -1,31 +1,12 @@
 import React, { Component } from 'react';
-import {
-    View,
-    StyleSheet,
-    Text
-} from 'react-native';
-import BottomNavigation from './BottomNavigation'
+import SideBar from './SideBar.js'
 
 export default class HomePage extends Component {
     toggleOpen = () => { }
 
     render() {
         return (
-            <View>
-                <View style={styles.container}>
-                    <Text>Open up App.js to start working on your app!</Text>
-                </View>
-                <BottomNavigation />
-            </View>
+            <SideBar />
         );
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        height: '92%',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    }
-});
