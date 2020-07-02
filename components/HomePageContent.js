@@ -4,7 +4,8 @@ import {
     StyleSheet,
     Text
 } from 'react-native';
-import BottomNavigation from './BottomNavigation'
+//import MapView from 'react-native-maps';
+import BottomNavigation from './BottomNavigation';
 
 export default class ContentView extends Component {
     toggleOpen = () => { }
@@ -13,7 +14,15 @@ export default class ContentView extends Component {
         return (
             <View>
                 <View style={styles.container}>
-                    <Text>Open up App.js to start working on your app!</Text>
+                {/*
+                <MapView style={{ flex: 1 }}
+                        region={{
+                            latitude: 37.78825,
+                            longitude: -122.4324,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421
+                        }} />
+                */}
                 </View>
                 <BottomNavigation />
             </View>

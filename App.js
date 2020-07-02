@@ -15,7 +15,7 @@ export default class App extends React.Component {
 
 const AppNavigator = createStackNavigator({
     LogIn: { screen: LoginPage },
-    SingUp: { screen: SingUpPage },
+    SignUp: { screen: SingUpPage },
     AddDevice: { screen: AddDvicePage },
     Home: { screen: HomePage }
 });
