@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-    Dimensions,
     StyleSheet,
     ScrollView,
     View,
@@ -15,56 +14,6 @@ import Icon from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
 import bgImage from '../assets/device_background.jpg'
-
-const window = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-    backgroundContainer: {
-        flex: 1,
-        width: null,
-        height: null,
-        padding: 30
-    },
-    menuItem: {
-        marginBottom: 30,
-        marginTop: 15,
-        borderStyle: 'solid',
-        borderBottomWidth: 1,
-        borderBottomColor: 'gray',
-        paddingBottom: 6,
-        paddingLeft: 5
-    },
-    itemText: {
-        fontSize: 15,
-        fontWeight: 'bold',
-        paddingTop: 2,
-        paddingLeft: 10,
-        position: 'absolute',
-        top: 2,
-        left: 25
-    },
-    userContainer: {
-        marginBottom: 30, 
-        marginTop: 5, 
-        backgroundColor: 'rgba(240, 230, 140, .8)',
-        padding: 10,
-        paddingLeft: 25,
-        borderRadius: 15
-    },
-    userImage: {
-        width: 60,
-        height: 60,
-        borderRadius: 24,
-        flex: 1,
-    },
-    userName: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        position: 'absolute',
-        left: 110,
-        top: 30,
-    }
-});
 
 export default class Menu extends React.Component {
     render() {
@@ -121,3 +70,51 @@ export default class Menu extends React.Component {
 Menu.propTypes = {
     onItemSelected: PropTypes.func.isRequired,
 };
+
+const styles = StyleSheet.create({
+    backgroundContainer: {
+        flex: 1,
+        width: null,
+        height: null,
+        padding: 30
+    },
+    menuItem: {
+        marginBottom: 30,
+        marginTop: 15,
+        borderStyle: 'solid',
+        borderBottomWidth: 1,
+        borderBottomColor: 'gray',
+        paddingBottom: 6,
+        paddingLeft: 5
+    },
+    itemText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        paddingTop: 2,
+        paddingLeft: 10,
+        position: 'absolute',
+        top: 2,
+        left: 25
+    },
+    userContainer: {
+        marginBottom: 30,
+        marginTop: 5,
+        backgroundColor: 'rgba(240, 230, 140, .8)',
+        padding: 10,
+        paddingLeft: 25,
+        borderRadius: 15
+    },
+    userImage: {
+        width: 60,
+        height: 60,
+        borderRadius: 24,
+        flex: 1,
+    },
+    userName: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        position: 'absolute',
+        left: 110,
+        top: 30,
+    }
+});

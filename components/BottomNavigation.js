@@ -1,7 +1,29 @@
-import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, Text, View, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import React from 'react';
+import { View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import TabBar from './TabBar';
+import { HistoryScreen } from './screens/HistoryScreen';
+import { CameraScreen } from './screens/CameraScreen';
+import { MapScreen } from './screens/MapScreen';
+import { ExclamationScreen } from './screens/ExclamationScreen';
 
+const BottomNavigation = () => {
+    const Tab = createBottomTabNavigator();
+    return (
+        <View style={{ flex: 1, position: 'relative' }}>
+            <Tab.Navigator tabBar={(props) => <TabBar {...props} />} >
+                <Tab.Screen name="history" component={HistoryScreen} />
+                <Tab.Screen name="camera" component={CameraScreen} />
+                <Tab.Screen name="map-marked-alt" component={MapScreen} />
+                <Tab.Screen name="exclamation" component={ExclamationScreen} />
+            </Tab.Navigator>
+        </View>
+    );
+};
+
+export default BottomNavigation;
+
+/*
 export default class BottomNavigation extends Component {
     render() {
         const data = [{
@@ -139,3 +161,5 @@ class ExclamationTab {
 
     }
 }
+
+*/

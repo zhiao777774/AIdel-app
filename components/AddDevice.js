@@ -4,8 +4,6 @@ import {
     , Text
     , View
     , ImageBackground
-    , Image
-    , TextInput
     , Dimensions
     , TouchableOpacity
 } from 'react-native';

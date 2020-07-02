@@ -4,7 +4,6 @@ import {
     , Text
     , View
     , ImageBackground
-    , Image
     , TextInput
     , Dimensions
     , TouchableOpacity
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         fontSize: 16,
         paddingLeft: 45,
-        backgroundColor: 'rgba(0,0,0,0.35)',
+        backgroundColor: 'rgba(0,0,0,.4)',
         color: 'rgba(255,255,255,0.7)',
         marginHorizontal: 25,
         paddingLeft: 30
@@ -131,7 +130,7 @@ const styles = StyleSheet.create({
     },
     singUp: {
         color: '#DAA520',
-        fontSize: 12,
+        fontSize: 14,
         textAlign: 'center',
         left: 125,
         marginTop: 8
