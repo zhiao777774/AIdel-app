@@ -19,17 +19,17 @@ const window = Dimensions.get('window');
 const uri = 'https://pickaface.net/gallery/avatar/Opi51c74d0125fd4.png';
 
 const styles = StyleSheet.create({
-    menu: {
+    Menu: {
         flex: 1,
         height: window.height,
         backgroundColor: '#C4E1E1',
         padding: 30
     },
-    avatarContainer: {
+    UserContainer: {
         marginBottom: 30,
         marginTop: 50,
     },
-    avatarContainer2: {
+    MenuListContainer: {
         marginBottom: 30,
         marginTop: 30,
         borderStyle: 'solid',
@@ -37,21 +37,18 @@ const styles = StyleSheet.create({
         borderBottomColor: 'gray',
         paddingBottom: 6
     },
-    avatar: {
+    UserImage: {
         width: 48,
         height: 48,
         borderRadius: 24,
         flex: 1,
     },
-    avatar2: {
-        paddingTop: 5
-    },
-    name: {
+    UserName: {
         position: 'absolute',
         left: 70,
         top: 20,
     },
-    item: {
+    ListItemText: {
         fontSize: 14,
         fontWeight: '500',
         paddingTop: 5,
@@ -64,10 +61,10 @@ const styles = StyleSheet.create({
 export default class Menu extends React.Component {
     render() {
         return (
-            <ScrollView scrollsToTop={false} style={styles.menu}>
-                <View style={styles.avatarContainer}>
-                    <Image style={styles.avatar} source={{ uri }} />
-                    <Text style={styles.name}>Jason</Text>
+            <ScrollView scrollsToTop={false} style={styles.Menu}>
+                <View style={styles.UserContainer}>
+                    <Image style={styles.UserImage} source={{ uri }} />
+                    <Text style={styles.UserName}>Jason</Text>
                 </View>
                 <TouchableOpacity onPress={() => {
                     const resetAction = StackActions.reset({
@@ -76,30 +73,30 @@ export default class Menu extends React.Component {
                     });
                     this.props.navigation.dispatch(resetAction);
                 }}>
-                    <View style={styles.avatarContainer2}>
+                    <View style={styles.MenuListContainer}>
                         <Octicons name={'device-mobile'} size={20} />
                         <Text
                             onPress={() => console.log('Devices')}
-                            style={[styles.item, { left: 20 }]}
+                            style={[styles.ListItemText, { left: 20 }]}
                         >
                             Devices
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <View style={styles.avatarContainer2}>
+                <View style={styles.MenuListContainer}>
                     <Icon name={'help-with-circle'} size={20} />
                     <Text
                         onPress={() => console.log('Help')}
-                        style={styles.item}
+                        style={styles.ListItemText}
                     >
                         Help
                     </Text>
                 </View>
-                <View style={styles.avatarContainer2}>
+                <View style={styles.MenuListContainer}>
                     <AntDesign name={'setting'} size={20} />
                     <Text
                         onPress={() => console.log('Setting')}
-                        style={styles.item}
+                        style={styles.ListItemText}
                     >
                         Setting
                     </Text>
@@ -112,11 +109,11 @@ export default class Menu extends React.Component {
                     });
                     this.props.navigation.dispatch(resetAction);
                 }}>
-                    <View style={styles.avatarContainer2}>
+                    <View style={styles.MenuListContainer}>
                         <AntDesign name={'logout'} size={20} />
                         <Text
                             onPress={() => console.log('Logout')}
-                            style={styles.item}
+                            style={styles.ListItemText}
                         >
                             Logout
                         </Text>
