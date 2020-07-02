@@ -6,7 +6,7 @@ export default class HomePage extends Component {
 
     render() {
         return (
-            <SideBar />
+            <SideBar navigation={this.props.navigation} />
         );
     }
 }

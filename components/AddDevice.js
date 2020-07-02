@@ -19,7 +19,6 @@ export default class AddDevice extends Component {
 
     render() {
         return (
-
             <ImageBackground source={bgImage} style={styles.backgroundContainer}>
                 <View>
                     <TouchableOpacity style={styles.buttonAddDevice} onPress={() => {

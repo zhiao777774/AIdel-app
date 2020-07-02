@@ -17,8 +17,8 @@ const AppNavigator = createStackNavigator({
     LogIn: { screen: LoginPage },
     SingUp: { screen: SingUpPage },
     AddDevice: { screen: AddDvicePage },
-    Home: { screen: HomePage },
-}, { gesturesEnabled: false });
+    Home: { screen: HomePage }
+});
 const AppContainer = createAppContainer(AppNavigator);
 
 /*

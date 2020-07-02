@@ -38,39 +38,37 @@ class Tab extends React.Component {
     }
 
     click = () => {
-		//判斷目前為展開還是收合狀態
-		//切換頁面 or 抽換tabBody內容
-		let tab;
-		switch(this.props.id) {
-            case 'history': 
+        //判斷目前為展開還是收合狀態
+        //切換頁面 or 抽換tabBody內容
+        let tab;
+        switch (this.props.id) {
+            case 'history':
                 tab = new HistoryTab();
                 break;
-            case 'camera': 
+            case 'camera':
                 tab = new CameraTab();
                 break;
-            case 'map': 
+            case 'map':
                 tab = new MapTab();
                 break;
-            case 'exclamation': 
+            case 'exclamation':
                 tab = new ExclamationTab();
                 break;
-		}
-	    tab.exec();
-		
-		if(this.currentTab) this.currentTab.dispose();
+        }
+        tab.exec();
+
+        if (this.currentTab) this.currentTab.dispose();
         this.currentTab = tab;
-        
-       Alert.alert(this.props.id);
-	}
+
+        Alert.alert(this.props.id);
+    }
 
     render() {
         return (
             <View id={this.props.id} style={styles.tab}>
-                <View>
-                    <TouchableOpacity onPress={() => this.click()}>
-                        <Icon name={this.props.icon} size={28} color='rgba(255, 255, 255, 1)' />
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={() => this.click()}>
+                    <Icon name={this.props.icon} size={28} color='rgba(255, 255, 255, 1)' />
+                </TouchableOpacity>
                 <View className="tabBody" style={styles.tabBody}>
                     <Text>{this.props.id}</Text>
                 </View>
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,165,0, .7)'
     },
     tabBody: {
-
+        backgroundColor: 'rgba(0, 0, 0, .7)'
     }
 });
 
@@ -118,7 +116,7 @@ class CameraTab {
     }
 
     dispose() {
-        
+
     }
 }
 
@@ -128,7 +126,7 @@ class MapTab {
     }
 
     dispose() {
-        
+
     }
 }
 
@@ -138,6 +136,6 @@ class ExclamationTab {
     }
 
     dispose() {
-        
+
     }
 }
