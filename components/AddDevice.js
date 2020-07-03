@@ -10,7 +10,7 @@ import {
 import ListView from 'deprecated-react-native-listview';
 import 'react-native-gesture-handler';
 import { StackActions, NavigationActions } from 'react-navigation';
-import bgImage from '../assets/device_background.jpg'
+import bgImage from '../assets/background2.jpg'
 import Row from './Row';
 
 const { width: WIDTH } = Dimensions.get('window');

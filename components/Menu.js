@@ -13,7 +13,7 @@ import { StackActions, NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Octicons from 'react-native-vector-icons/Octicons';
-import bgImage from '../assets/device_background.jpg'
+import bgImage from '../assets/background2.jpg'
 
 export default class Menu extends React.Component {
     render() {
@@ -66,10 +66,6 @@ export default class Menu extends React.Component {
         );
     }
 }
-
-Menu.propTypes = {
-    onItemSelected: PropTypes.func.isRequired,
-};
 
 const styles = StyleSheet.create({
     backgroundContainer: {

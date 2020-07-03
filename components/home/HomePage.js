@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import SideBar from '../SideBar'
+import SideBar from '../SideBar';
 
 export default class HomePage extends Component {
     static navigationOptions = {
-        title: '主頁'
+        title: '主頁',
     };
 
     render() {
