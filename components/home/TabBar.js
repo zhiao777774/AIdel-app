@@ -12,6 +12,7 @@ const TabBar = ({
     state,
     descriptors,
     navigation,
+    toggle
 }) => {
     const [translateValue] = useState(new Animated.Value(0));
     const totalWidth = Dimensions.get('window').width;
@@ -60,6 +61,7 @@ const TabBar = ({
 
                     const onLongPress = () => {
                         console.log(label.toString());
+                        toggle();
                     };
 
                     return (

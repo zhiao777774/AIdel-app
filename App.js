@@ -5,7 +5,7 @@ import { createAppContainer } from 'react-navigation';
 import LoginPage from './components/LogIn';
 import SingUpPage from './components/signUp';
 import AddDvicePage from './components/AddDevice';
-import HomePage from './components/HomePage';
+import HomePage from './components/home/HomePage';
 
 export default class App extends React.Component {
     render() {
