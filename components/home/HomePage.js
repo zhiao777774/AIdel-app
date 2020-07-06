@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import SideBar from './SideBar.js'
+import SideBar from '../SideBar';
 
 export default class HomePage extends Component {
-    toggleOpen = () => { }
+    static navigationOptions = {
+        title: '主頁',
+    };
 
     render() {
         return (
