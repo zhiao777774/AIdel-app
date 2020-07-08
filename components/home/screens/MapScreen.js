@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Switch } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Polygon, Polyline, Callout } from 'react-native-maps';
-import screenStyle from './screenStyles'
+import screenStyle from './screenStyles';
 
 const markers = [];
 
@@ -9,6 +9,7 @@ export default class MapScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isOpen: true,
             coordinates: [
                 { i: 0, time: '2020/07/06 10:00', latitude: 24.9844926, longitude: 121.3401801, visible: true },
                 { i: 1, time: '2020/07/06 10:05', latitude: 24.9844926, longitude: 121.3, visible: true },
@@ -21,7 +22,7 @@ export default class MapScreen extends React.Component {
         const coords = this.state.coordinates;
         return coords.map((coord) =>
             (
-                <CusMarker
+                <CustomizeMarker
                     key={coord.i}
                     coordinate={coord}
                     calloutVisible={coord.visible} />
@@ -48,6 +49,17 @@ export default class MapScreen extends React.Component {
         const coords = this.state.coordinates;
         return (
             <View style={screenStyle.screen}>
+                <View style={{ flexDirection: 'row', 
+                    marginTop: 0, marginBottom: 0,
+                    marginLeft: 'auto',
+                    marginRight: 'auto'
+                }}>
+                    <Text style={{marginTop: 8, marginRight: 10, fontWeight: 'bold'}}>顯示時間</Text>
+                    <Switch value={this.state.isOpen} onValueChange={(v) => {
+                        this.setState({ isOpen: v });
+                        this.changeVisible();
+                    }} />
+                </View>
                 <MapView
                     ref='map'
                     provider={PROVIDER_GOOGLE}
@@ -55,25 +67,21 @@ export default class MapScreen extends React.Component {
                     region={{
                         latitude: coords[0].latitude,
                         longitude: coords[0].longitude,
-                        latitudeDelta: 0.09,
-                        longitudeDelta: 0.09
+                        latitudeDelta: 0.06,
+                        longitudeDelta: 0.06
                     }}
                     onLayout={() => {
                         markers.forEach((marker) => {
-                            console.log(marker);
                             marker.showCallout();
                         });
                     }}
                 >
                     {this.renderMarkers()}
                     <Polyline
-                        coordinates={[
-                            coords[0], coords[1]
-                        ]}
-                        strokeColor="#000" // fallback for when strokeColors is not supported by the map-provider
+                        coordinates={coords}
                         strokeColors={[
                             '#7F0000',
-                            '#00000000', // no color, creates a "long" gradient between the previous and next coordinate
+                            '#00000000',
                             '#B24112',
                             '#E5845C',
                             '#238C23',
@@ -82,18 +90,13 @@ export default class MapScreen extends React.Component {
                         strokeWidth={6}
                     />
                 </MapView>
-                <Button title="toggle" onPress={() => {
-                    //markers[0].showCallout();
-                    //markers[1].showCallout();
-                }} />
             </View>
-
         );
     }
 };
 
 
-class CusMarker extends React.Component {
+class CustomizeMarker extends React.Component {
     marker
 
     render() {
@@ -124,6 +127,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 15,
-        marginBottom: -10
+        marginBottom: 2
     },
 });

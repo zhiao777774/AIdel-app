@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Animated, Dimensions, Text } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
-import MapView, { Marker, PROVIDER_GOOGLE, Callout, } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
 import BottomNavigation from './BottomNavigation';
 
 const HEIGHT = Dimensions.get('window').height;
@@ -12,11 +12,12 @@ export default class ContentView extends Component {
         this.state = {
             expanded: true,
             viewHeight: new Animated.Value(HEIGHT * 0.5),
-            coordinates: [
-                { Location: '1', time: '2020/07/06 10:00', latitude: 24.9844926, longitude: 121.3401801 },
-                { Location: '1', time: '2020/07/06 10:05', latitude: 24.9844926, longitude: 121.3 },
-                { Location: '1', time: '2020/07/06 10:10', latitude: 24.9844926, longitude: 121.2401801 },
-            ]
+            coordinate: {
+                i: 0,
+                time: '2020/07/06 10:10',
+                latitude: 24.9844926,
+                longitude: 121.2401801
+            }
         }
     }
 
@@ -34,7 +35,8 @@ export default class ContentView extends Component {
     }
 
     render() {
-        const coords = this.state.coordinates;
+        const coord = this.state.coordinate;
+
         return (
             <NavigationContainer>
                 <View style={styles.container}>
@@ -48,20 +50,20 @@ export default class ContentView extends Component {
                             provider={PROVIDER_GOOGLE}
                             style={styles.mapContainer}
                             region={{
-                                latitude: coords[2].latitude,
-                                longitude: coords[2].longitude,
+                                latitude: coord.latitude,
+                                longitude: coord.longitude,
                                 latitudeDelta: 0.09,
                                 longitudeDelta: 0.09
-                            }}>
-                            <Marker
-                                coordinate={coords[2]}>
+                            }}
+                            onLayout={() => this.marker.showCallout()}
+                            onPress={() => this.marker.showCallout()}
+                        >
+                            <Marker coordinate={coord} ref={(marker) => this.marker = marker}>
                                 <Callout alphaHitTest={true}>
-                                    <Text>{coords[2].time}</Text>
+                                    <Text>{coord.time}</Text>
                                 </Callout>
-
                             </Marker>
                         </MapView>
-
                     </Animated.View>
                     <BottomNavigation toggle={this.toggle} />
                 </View>
@@ -80,6 +82,6 @@ const styles = StyleSheet.create({
     },
     mapContainer: {
         flex: 1,
-        margin: 0
+        margin: 15
     }
 })
