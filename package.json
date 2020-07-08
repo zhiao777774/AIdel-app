@@ -21,11 +21,7 @@
     "react-native-hr": "^1.1.4",
     "react-native-map-clustering": "^3.3.9",
     "react-native-maps": "^0.27.1",
-<<<<<<< HEAD
     "react-native-modal-dropdown": "^0.7.0",
-=======
-    "react-native-maps-super-cluster": "^1.6.0",
->>>>>>> 9bf5245f4b75d3ec9b7b7f5371e6aa22a545b7cb
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "0.7.3",
     "react-native-safe-area-view": "^1.1.1",
