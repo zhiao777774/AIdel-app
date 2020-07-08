@@ -70,9 +70,9 @@ export default class CameraScreen extends React.Component {
             <ScrollView>
                 <View style={[screenStyle.screen, styles.container]}>
                     {
-                        this.state.data.map(({ date, data }) => {
+                        this.state.data.map(({ date, data }, i) => {
                             return (
-                                <View>
+                                <View key={i}>
                                     <MessageDate date={date} />
                                     <Carousel data={data} />
                                 </View>
