@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Switch, Image } from 'react-native';
 import MapView from 'react-native-map-clustering';
 import { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import screenStyle from './screenStyles';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 export default class MapScreen extends React.Component {
     constructor(props) {
@@ -16,12 +17,40 @@ export default class MapScreen extends React.Component {
                     latitude: 24.9844926, longitude: 121.3401801, showDate: false
                 },
                 {
-                    number: 1, date: '2020/07/08 10:10',
+                    number: 1, date: '2020/07/08 10:05',
                     latitude: 24.9844926, longitude: 121.3, showDate: false
                 },
                 {
-                    number: 2, date: '2020/07/08 10:20',
-                    latitude: 24.9844926, longitude: 121.2401801, showDate: false
+                    number: 2, date: '2020/07/08 10:10',
+                    latitude: 24.9994926, longitude: 121.2401801, showDate: false
+                },
+                {
+                    number: 3, date: '2020/07/08 10:15',
+                    latitude: 24.974926, longitude: 121.244, showDate: false
+                },
+                {
+                    number: 4, date: '2020/07/08 10:20',
+                    latitude: 24.934005, longitude: 121.2631801, showDate: false
+                },
+                {
+                    number: 5, date: '2020/07/08 10:25',
+                    latitude: 24.8844926, longitude: 121.3600801, showDate: false
+                },
+                {
+                    number: 6, date: '2020/07/08 10:30',
+                    latitude: 25, longitude: 121.4401801, showDate: false
+                },
+                {
+                    number: 7, date: '2020/07/08 10:35',
+                    latitude: 25.0058, longitude: 121.4741801, showDate: false
+                },
+                {
+                    number: 8, date: '2020/07/08 10:40',
+                    latitude: 25.05, longitude: 121.4951801, showDate: false
+                },
+                {
+                    number: 9, date: '2020/07/08 10:45',
+                    latitude: 25.09, longitude: 121.5051801, showDate: false
                 }
             ],
             mapRegion: undefined
@@ -80,6 +109,16 @@ export default class MapScreen extends React.Component {
                         this.setState({ showDate: v });
                         this.toggleMarkerShowDate();
                     }} />
+                    <ModalDropdown options={coords.map(({ date }) => date)}
+                        defaultValue='選擇日期'
+                        style={styles.dropdownstyle}
+                        textStyle={styles.textstyle}
+                        dropdownTextStyle={styles.dropdowntextstyle}
+                        dropdownTextHighlightStyle={styles.dropdowntexthightlightstyle}
+                        onSelect={() => {
+                            this.setState();
+                        }}>
+                    </ModalDropdown>
                 </View>
                 <MapView
                     mapRef={(ref) => this.mapRef = ref}
@@ -138,8 +177,34 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
-    dropdown: {
-
+    dropdownstyle: {
+        alignSelf: 'flex-end',
+        width: 150,
+        borderWidth: 0,
+        borderRadius: 3,
+        backgroundColor: 'cornflowerblue',
+        marginLeft: 20,
+        marginTop: -2
+    },
+    textstyle: {
+        marginVertical: 10,
+        marginHorizontal: 6,
+        fontSize: 15,
+        color: 'white',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+    }, dropdowntextstyle: {
+        marginVertical: 5,
+        marginHorizontal: 6,
+        fontSize: 15,
+        color: 'gray',
+        textAlign: 'center',
+        textAlignVertical: 'center',
+    },
+    dropdowntexthightlightstyle: {
+        fontSize: 15,
+        backgroundColor: '#fff',
+        color: '#000'
     },
     markerIcon: {
         width: 50,
