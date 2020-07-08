@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, Switch, Image } from 'react-native';
+import ModalDropdown from 'react-native-modal-dropdown';
 import MapView from 'react-native-map-clustering';
 import { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import screenStyle from './screenStyles';
-import ModalDropdown from 'react-native-modal-dropdown';
 
 export default class MapScreen extends React.Component {
     constructor(props) {
@@ -17,39 +17,39 @@ export default class MapScreen extends React.Component {
                     latitude: 24.9844926, longitude: 121.3401801, showDate: false
                 },
                 {
-                    number: 1, date: '2020/07/08 10:05',
+                    number: 1, date: '2020/07/08 10:10',
                     latitude: 24.9844926, longitude: 121.3, showDate: false
                 },
                 {
-                    number: 2, date: '2020/07/08 10:10',
+                    number: 2, date: '2020/07/08 10:20',
                     latitude: 24.9994926, longitude: 121.2401801, showDate: false
                 },
                 {
-                    number: 3, date: '2020/07/08 10:15',
+                    number: 3, date: '2020/07/08 10:30',
                     latitude: 24.974926, longitude: 121.244, showDate: false
                 },
                 {
-                    number: 4, date: '2020/07/08 10:20',
+                    number: 4, date: '2020/07/08 10:40',
                     latitude: 24.934005, longitude: 121.2631801, showDate: false
                 },
                 {
-                    number: 5, date: '2020/07/08 10:25',
+                    number: 5, date: '2020/07/08 10:50',
                     latitude: 24.8844926, longitude: 121.3600801, showDate: false
                 },
                 {
-                    number: 6, date: '2020/07/08 10:30',
+                    number: 6, date: '2020/07/08 11:00',
                     latitude: 25, longitude: 121.4401801, showDate: false
                 },
                 {
-                    number: 7, date: '2020/07/08 10:35',
+                    number: 7, date: '2020/07/08 11:10',
                     latitude: 25.0058, longitude: 121.4741801, showDate: false
                 },
                 {
-                    number: 8, date: '2020/07/08 10:40',
+                    number: 8, date: '2020/07/08 11:20',
                     latitude: 25.05, longitude: 121.4951801, showDate: false
                 },
                 {
-                    number: 9, date: '2020/07/08 10:45',
+                    number: 9, date: '2020/07/08 11:30',
                     latitude: 25.09, longitude: 121.5051801, showDate: false
                 }
             ],
@@ -109,16 +109,30 @@ export default class MapScreen extends React.Component {
                         this.setState({ showDate: v });
                         this.toggleMarkerShowDate();
                     }} />
-                    <ModalDropdown options={coords.map(({ date }) => date)}
+                    <ModalDropdown
+                        options={['全部時間'].concat(coords.map(({ date }) => date))}
                         defaultValue='選擇日期'
-                        style={styles.dropdownstyle}
-                        textStyle={styles.textstyle}
-                        dropdownTextStyle={styles.dropdowntextstyle}
-                        dropdownTextHighlightStyle={styles.dropdowntexthightlightstyle}
-                        onSelect={() => {
-                            this.setState();
-                        }}>
-                    </ModalDropdown>
+                        defaultIndex={0}
+                        style={styles.dropdown}
+                        textStyle={styles.textStyle}
+                        dropdownTextStyle={styles.dropdownTextStyle}
+                        dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
+                        onSelect={(i) => {
+                            i = Number(i);
+                            this.setState({
+                                mapRegion: i !== 0 ? {
+                                    latitude: coords[i - 1].latitude,
+                                    longitude: coords[i - 1].longitude,
+                                    latitudeDelta: 0.06,
+                                    longitudeDelta: 0.06
+                                } : {
+                                        latitude: coords[0].latitude,
+                                        longitude: coords[0].longitude,
+                                        latitudeDelta: 0.4,
+                                        longitudeDelta: 0.4
+                                    }
+                            });
+                        }} />
                 </View>
                 <MapView
                     mapRef={(ref) => this.mapRef = ref}
@@ -128,8 +142,8 @@ export default class MapScreen extends React.Component {
                     initialRegion={{
                         latitude: coords[0].latitude,
                         longitude: coords[0].longitude,
-                        latitudeDelta: 0.9,
-                        longitudeDelta: 0.9
+                        latitudeDelta: 0.5,
+                        longitudeDelta: 0.5
                     }}
                     region={this.state.mapRegion}
                 >
@@ -177,7 +191,7 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto'
     },
-    dropdownstyle: {
+    dropdown: {
         alignSelf: 'flex-end',
         width: 150,
         borderWidth: 0,
@@ -186,14 +200,15 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginTop: -2
     },
-    textstyle: {
+    textStyle: {
         marginVertical: 10,
         marginHorizontal: 6,
         fontSize: 15,
         color: 'white',
         textAlign: 'center',
         textAlignVertical: 'center',
-    }, dropdowntextstyle: {
+    },
+    dropdownTextStyle: {
         marginVertical: 5,
         marginHorizontal: 6,
         fontSize: 15,
@@ -201,7 +216,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
     },
-    dropdowntexthightlightstyle: {
+    dropdownTextHighlightStyle: {
         fontSize: 15,
         backgroundColor: '#fff',
         color: '#000'
