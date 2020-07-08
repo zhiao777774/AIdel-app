@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Switch } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Polygon, Polyline, Callout } from 'react-native-maps';
+import { StyleSheet, Text, View, Switch, Alert } from 'react-native';
+import MapView, { Marker, PROVIDER_GOOGLE, Polygon, Polyline, Callout, setMapBoundaries } from 'react-native-maps';
 import screenStyle from './screenStyles';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 const markers = [];
 
@@ -35,7 +36,7 @@ export default class MapScreen extends React.Component {
             coordinates: this.state.coordinates.map((coord) => {
                 const { i, latitude, longitude, time, visible } = coord;
                 return {
-                    i, latitude, longitude, time, 
+                    i, latitude, longitude, time,
                     visible: !visible
                 };
             })
@@ -46,26 +47,28 @@ export default class MapScreen extends React.Component {
         const coords = this.state.coordinates;
         return (
             <View style={screenStyle.screen}>
-                <View style={{ flexDirection: 'row', 
+                <View style={{
+                    flexDirection: 'row',
                     marginTop: 0, marginBottom: 0,
                     marginLeft: 'auto',
                     marginRight: 'auto'
                 }}>
-                    <Text style={{marginTop: 8, marginRight: 10, fontWeight: 'bold'}}>顯示時間</Text>
+                    <Text style={{ marginTop: 8, marginRight: 10, fontWeight: 'bold' }}>顯示時間</Text>
                     <Switch value={this.state.isOpen} onValueChange={(v) => {
                         this.setState({ isOpen: v });
                         this.toggleCalloutVisible();
                     }} />
+                    
                 </View>
                 <MapView
                     ref='map'
                     provider={PROVIDER_GOOGLE}
                     style={styles.container}
-                    region={{
+                    initialRegion={{
                         latitude: coords[0].latitude,
                         longitude: coords[0].longitude,
-                        latitudeDelta: 0.06,
-                        longitudeDelta: 0.06
+                        latitudeDelta: 0.9,
+                        longitudeDelta: 0.9
                     }}
                     onLayout={() => {
                         markers.forEach((marker) => {
@@ -77,19 +80,17 @@ export default class MapScreen extends React.Component {
                             marker.showCallout();
                         });
                     }}
+                    zoomEnabled={true}
+                    scrollEnabled={true}
+                    minZoomLevel={6}
                 >
                     {this.renderMarkers()}
                     <Polyline
                         coordinates={coords}
                         strokeColors={[
                             '#7F0000',
-                            '#00000000',
-                            '#B24112',
-                            '#E5845C',
-                            '#238C23',
-                            '#7F0000'
                         ]}
-                        strokeWidth={6}
+                        strokeWidth={5}
                     />
                 </MapView>
             </View>
