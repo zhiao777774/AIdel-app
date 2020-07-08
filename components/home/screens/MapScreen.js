@@ -1,95 +1,104 @@
 import React from 'react';
-import { StyleSheet, Text, View, Switch } from 'react-native';
-import MapView, { Marker, PROVIDER_GOOGLE, Polygon, Polyline, Callout } from 'react-native-maps';
+import { StyleSheet, Text, View, Switch, Image } from 'react-native';
+import MapView from 'react-native-map-clustering';
+import { Marker, PROVIDER_GOOGLE, Polyline } from 'react-native-maps';
 import screenStyle from './screenStyles';
-
-const markers = [];
 
 export default class MapScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.mapRef = undefined;
         this.state = {
-            isOpen: true,
+            showDate: false,
             coordinates: [
-                { i: 0, time: '2020/07/06 10:00', latitude: 24.9844926, longitude: 121.3401801, visible: true },
-                { i: 1, time: '2020/07/06 10:05', latitude: 24.9844926, longitude: 121.3, visible: true },
-                { i: 2, time: '2020/07/06 10:10', latitude: 24.9844926, longitude: 121.2401801, visible: true },
-            ]
+                {
+                    number: 0, date: '2020/07/08 10:00',
+                    latitude: 24.9844926, longitude: 121.3401801, showDate: false
+                },
+                {
+                    number: 1, date: '2020/07/08 10:10',
+                    latitude: 24.9844926, longitude: 121.3, showDate: false
+                },
+                {
+                    number: 2, date: '2020/07/08 10:20',
+                    latitude: 24.9844926, longitude: 121.2401801, showDate: false
+                }
+            ],
+            mapRegion: undefined
         }
     }
 
+    /*renderMarkers = () => {
+        return this.state.coordinates
+            .map((coord) => <CustomizeMarker {...coord} key={coord.number} />);
+    }*/
+
     renderMarkers = () => {
-        const coords = this.state.coordinates;
-        return coords.map((coord) =>
-            (
-                <CustomizeMarker
-                    key={coord.i}
-                    coordinate={coord}
-                    calloutVisible={coord.visible} />
-            )
-        );
+        return this.state.coordinates
+            .map((coord) => {
+                const { number, date, showDate, latitude, longitude } = coord;
+                return (
+                    <Marker key={number} coordinate={{ latitude, longitude }}>
+                        <Text style={styles.markerText}>
+                            {showDate ? date : number + 1}
+                        </Text>
+                        <Image source={require('../../../assets/marker.png')} style={[
+                            styles.markerIcon,
+                            { marginLeft: showDate ? 38 : 0 }
+                        ]} />
+                    </Marker>
+                );
+            });
     }
 
-    toggleCalloutVisible = () => {
+    toggleMarkerShowDate = () => {
         this.setState({
             coordinates: this.state.coordinates.map((coord) => {
-                const { i, latitude, longitude, time, visible } = coord;
-                return {
-                    i, latitude, longitude, time, 
-                    visible: !visible
-                };
+                return Object.assign({}, coord,
+                    { showDate: !coord.showDate });
             })
-        })
+        });
+    }
+
+    componentDidMount() {
+        this.mapRef.setMapBoundaries({
+            latitude: 25.57144206466311,
+            longitude: 118.5884760904839
+        }, {
+            latitude: 21.437573393627737,
+            longitude: 121.5634772598658
+        });
     }
 
     render() {
         const coords = this.state.coordinates;
         return (
             <View style={screenStyle.screen}>
-                <View style={{ flexDirection: 'row', 
-                    marginTop: 0, marginBottom: 0,
-                    marginLeft: 'auto',
-                    marginRight: 'auto'
-                }}>
-                    <Text style={{marginTop: 8, marginRight: 10, fontWeight: 'bold'}}>顯示時間</Text>
-                    <Switch value={this.state.isOpen} onValueChange={(v) => {
-                        this.setState({ isOpen: v });
-                        this.toggleCalloutVisible();
+                <View style={styles.toolBarContainer}>
+                    <Text style={{ marginTop: 8, marginRight: 10, fontWeight: 'bold' }}>顯示時間</Text>
+                    <Switch value={this.state.showDate} onValueChange={(v) => {
+                        this.setState({ showDate: v });
+                        this.toggleMarkerShowDate();
                     }} />
                 </View>
                 <MapView
-                    ref='map'
+                    mapRef={(ref) => this.mapRef = ref}
                     provider={PROVIDER_GOOGLE}
                     style={styles.container}
-                    region={{
+                    minZoomLevel={7}
+                    initialRegion={{
                         latitude: coords[0].latitude,
                         longitude: coords[0].longitude,
-                        latitudeDelta: 0.06,
-                        longitudeDelta: 0.06
+                        latitudeDelta: 0.9,
+                        longitudeDelta: 0.9
                     }}
-                    onLayout={() => {
-                        markers.forEach((marker) => {
-                            marker.showCallout();
-                        });
-                    }}
-                    onPress={() => {
-                        markers.forEach((marker) => {
-                            marker.showCallout();
-                        });
-                    }}
+                    region={this.state.mapRegion}
                 >
                     {this.renderMarkers()}
                     <Polyline
                         coordinates={coords}
-                        strokeColors={[
-                            '#7F0000',
-                            '#00000000',
-                            '#B24112',
-                            '#E5845C',
-                            '#238C23',
-                            '#7F0000'
-                        ]}
-                        strokeWidth={6}
+                        strokeColor='#7F0000'
+                        strokeWidth={3}
                     />
                 </MapView>
             </View>
@@ -97,29 +106,22 @@ export default class MapScreen extends React.Component {
     }
 };
 
-
 class CustomizeMarker extends React.Component {
+    marker;
+
     render() {
+        const { number, date, showDate, latitude, longitude } = this.props;
         return (
-            <Marker {...this.props} ref={_marker => { markers[this.props.coordinate.i] = _marker }}>
-                <Callout>
-                    <Text>{this.props.coordinate.time}</Text>
-                </Callout>
+            <Marker coordinate={{ latitude, longitude }} ref={_marker => { this.marker = _marker }}>
+                <Text style={styles.markerText}>
+                    {showDate ? date : number + 1}
+                </Text>
+                <Image source={require('../../../assets/marker.png')} style={[
+                    styles.markerIcon,
+                    { marginLeft: showDate ? 38 : 0 }
+                ]} />
             </Marker>
         )
-    }
-
-    componentDidUpdate() {
-        this.updateCallout();
-    }
-
-    updateCallout = () => {
-        const { i } = this.props.coordinate;
-        if (this.props.calloutVisible) {
-            markers[i].showCallout();
-        } else {
-            markers[i].hideCallout();
-        }
     }
 }
 
@@ -127,6 +129,26 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 15,
-        marginBottom: 2
+        marginBottom: 2,
     },
+    toolBarContainer: {
+        flexDirection: 'row',
+        marginTop: 0,
+        marginBottom: 0,
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    dropdown: {
+
+    },
+    markerIcon: {
+        width: 50,
+        height: 50
+    },
+    markerText: {
+        textAlign: 'center',
+        backgroundColor: 'white',
+        fontWeight: 'bold',
+        marginBottom: 5
+    }
 });
