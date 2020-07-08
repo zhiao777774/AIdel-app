@@ -30,16 +30,13 @@ export default class MapScreen extends React.Component {
         );
     }
 
-    changeVisible = () => {
+    toggleCalloutVisible = () => {
         this.setState({
-            coordinates: this.state.coordinates.map(({ i, latitude, longitude, time, visible }) => {
-                const newVisible = !visible;
+            coordinates: this.state.coordinates.map((coord) => {
+                const { i, latitude, longitude, time, visible } = coord;
                 return {
-                    i,
-                    latitude,
-                    longitude,
-                    time,
-                    visible: newVisible
+                    i, latitude, longitude, time, 
+                    visible: !visible
                 };
             })
         })
@@ -57,7 +54,7 @@ export default class MapScreen extends React.Component {
                     <Text style={{marginTop: 8, marginRight: 10, fontWeight: 'bold'}}>顯示時間</Text>
                     <Switch value={this.state.isOpen} onValueChange={(v) => {
                         this.setState({ isOpen: v });
-                        this.changeVisible();
+                        this.toggleCalloutVisible();
                     }} />
                 </View>
                 <MapView
@@ -71,6 +68,11 @@ export default class MapScreen extends React.Component {
                         longitudeDelta: 0.06
                     }}
                     onLayout={() => {
+                        markers.forEach((marker) => {
+                            marker.showCallout();
+                        });
+                    }}
+                    onPress={() => {
                         markers.forEach((marker) => {
                             marker.showCallout();
                         });
@@ -97,8 +99,6 @@ export default class MapScreen extends React.Component {
 
 
 class CustomizeMarker extends React.Component {
-    marker
-
     render() {
         return (
             <Marker {...this.props} ref={_marker => { markers[this.props.coordinate.i] = _marker }}>
