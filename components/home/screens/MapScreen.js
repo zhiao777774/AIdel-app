@@ -73,7 +73,12 @@ export default class MapScreen extends React.Component {
                         </Text>
                         <Image source={require('../../../assets/marker.png')} style={[
                             styles.markerIcon,
-                            { marginLeft: showDate ? 38 : 0 }
+                            {
+                                marginTop: 0,
+                                marginBottom: 0,
+                                marginLeft: showDate ? 'auto' : 0,
+                                marginRight: showDate ? 'auto' : 0
+                            }
                         ]} />
                     </Marker>
                 );
@@ -104,7 +109,7 @@ export default class MapScreen extends React.Component {
         return (
             <View style={screenStyle.screen}>
                 <View style={styles.toolBarContainer}>
-                    <Text style={{ marginTop: 8, marginRight: 10, fontWeight: 'bold' }}>顯示時間</Text>
+                    <Text style={{ marginTop: 8, marginRight: 5, fontWeight: 'bold' }}>顯示時間</Text>
                     <Switch value={this.state.showDate} onValueChange={(v) => {
                         this.setState({ showDate: v });
                         this.toggleMarkerShowDate();
@@ -123,8 +128,8 @@ export default class MapScreen extends React.Component {
                                 mapRegion: i !== 0 ? {
                                     latitude: coords[i - 1].latitude,
                                     longitude: coords[i - 1].longitude,
-                                    latitudeDelta: 0.06,
-                                    longitudeDelta: 0.06
+                                    latitudeDelta: 0.05,
+                                    longitudeDelta: 0.05
                                 } : {
                                         latitude: coords[0].latitude,
                                         longitude: coords[0].longitude,
@@ -137,7 +142,7 @@ export default class MapScreen extends React.Component {
                 <MapView
                     mapRef={(ref) => this.mapRef = ref}
                     provider={PROVIDER_GOOGLE}
-                    style={styles.container}
+                    style={styles.mapContainer}
                     minZoomLevel={7}
                     initialRegion={{
                         latitude: coords[0].latitude,
@@ -179,10 +184,11 @@ class CustomizeMarker extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    mapContainer: {
         flex: 1,
         margin: 15,
         marginBottom: 2,
+        borderRadius: 10
     },
     toolBarContainer: {
         flexDirection: 'row',

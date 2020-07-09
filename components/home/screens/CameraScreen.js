@@ -10,7 +10,7 @@ export default class CameraScreen extends React.Component {
         this.state = {
             data: [
                 {
-                    date: '2020/07/06 21:00',
+                    date: '2020/07/06 22:00',
                     data: [{
                         url: 'https://i.ibb.co/hYjK44F/anise-aroma-art-bazaar-277253.jpg',
                         id: 1
@@ -49,7 +49,7 @@ export default class CameraScreen extends React.Component {
                     }]
                 },
                 {
-                    date: '2020/07/06 22:00',
+                    date: '2020/07/06 21:00',
                     data: [{
                         url: 'https://www.yogawinetravel.com/wp-content/uploads/2018/09/Raohe-Night-Market-in-Taipei-Taiwan-1140x865.jpg',
                         id: 1

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
-import Message, { MessageDate } from '../../Message'
-import screenStyle from './screenStyles'
+import Message, { MessageDate } from '../../Message';
+import screenStyle from './screenStyles';
 
 export default class HistoryScreen extends React.Component {
     render() {

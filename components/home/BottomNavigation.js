@@ -7,7 +7,7 @@ import CameraScreen from './screens/CameraScreen';
 import MapScreen from './screens/MapScreen';
 import ExclamationScreen from './screens/ExclamationScreen';
 
-const BottomNavigation = ({toggle}) => {
+const BottomNavigation = ({ toggle, locate }) => {
     const Tab = createBottomTabNavigator();
     return (
         <View style={{ flex: 1 }}>
@@ -15,7 +15,7 @@ const BottomNavigation = ({toggle}) => {
                 <Tab.Screen name="history" component={HistoryScreen} />
                 <Tab.Screen name="camera" component={CameraScreen} />
                 <Tab.Screen name="map-marked-alt" component={MapScreen} />
-                <Tab.Screen name="exclamation" component={ExclamationScreen} />
+                <Tab.Screen name="exclamation" children={() => <ExclamationScreen locate={locate} />} />
             </Tab.Navigator>
         </View>
     );
