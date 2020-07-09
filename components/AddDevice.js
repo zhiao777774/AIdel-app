@@ -34,6 +34,9 @@ export default class AddDevice extends Component {
                 }, {
                     picture: 'http://120.125.83.10:90/assets/man.jpg',
                     name: '劉久銘'
+                }, {
+                    picture: 'http://120.125.83.10:90/assets/woman.jpg',
+                    name: '吳慧娟'
                 }
             ]
         }
