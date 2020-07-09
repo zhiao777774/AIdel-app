@@ -109,7 +109,7 @@ export default class MapScreen extends React.Component {
         return (
             <View style={screenStyle.screen}>
                 <View style={styles.toolBarContainer}>
-                    <Text style={{ marginTop: 8, marginRight: 10, fontWeight: 'bold' }}>顯示時間</Text>
+                    <Text style={{ marginTop: 8, marginRight: 5, fontWeight: 'bold' }}>顯示時間</Text>
                     <Switch value={this.state.showDate} onValueChange={(v) => {
                         this.setState({ showDate: v });
                         this.toggleMarkerShowDate();
