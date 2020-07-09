@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
     },
     mapContainer: {
         flex: 1,
-        margin: 15
+        margin: 15,
+        borderRadius: 10
     },
     markerIcon: {
         width: 36,
