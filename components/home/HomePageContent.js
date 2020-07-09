@@ -31,17 +31,17 @@ export default class ContentView extends Component {
             Animated.timing(this.state.viewHeight, {
                 toValue: HEIGHT * (this.state.expanded ? 0.46 : 0.15),
                 duration: 500
-            }),
+            })
         ]).start();
     }
 
     locateAccidentalPosition = (data) => {
-        const loc = data.location;
+        const { location } = data;
         this.setState({
             accidentMarker: (
-                <Marker coordinate={loc}>
+                <Marker coordinate={location}>
                     <Text style={styles.markerText}>
-                        {data.date + '\n' + loc.address + '\n'}
+                        {data.date + '\n' + location.address + '\n'}
                         <Text style={{ color: 'red' }}>{data.type}</Text>
                     </Text>
                     <Image source={require('../../assets/accident-marker.png')}
@@ -49,8 +49,8 @@ export default class ContentView extends Component {
                 </Marker>
             ),
             region: {
-                latitude: loc.latitude,
-                longitude: loc.longitude,
+                latitude: location.latitude,
+                longitude: location.longitude,
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01
             }
