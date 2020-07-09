@@ -13,10 +13,8 @@ export default class ContentView extends Component {
             expanded: true,
             viewHeight: new Animated.Value(HEIGHT * 0.5),
             coordinate: {
-                i: 0,
-                time: '2020/07/06 10:10',
-                latitude: 24.9844926,
-                longitude: 121.2401801
+                date: '2020/07/08 10:00',
+                latitude: 24.9844926, longitude: 121.3401801
             }
         }
     }
@@ -60,7 +58,7 @@ export default class ContentView extends Component {
                         >
                             <Marker coordinate={coord} ref={(marker) => this.marker = marker}>
                                 <Callout alphaHitTest={true}>
-                                    <Text>{coord.time}</Text>
+                                    <Text>{coord.date}</Text>
                                 </Callout>
                             </Marker>
                         </MapView>
