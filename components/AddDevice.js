@@ -42,17 +42,6 @@ export default class AddDevice extends Component {
         }
     }
 
-    /* componentDidMount() {
-        const devices = [];
-        const data = this.state.devicedata;
-        data.forEach(({ name, picture }) => {
-            devices.push({
-                picture,
-                name,
-            });
-        });
-    } */
-
     addNewDevice = () => {
         Alert.prompt('新增設備', '請輸入視障者名稱', [
             { text: '取消' },
