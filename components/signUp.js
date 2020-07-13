@@ -1,14 +1,7 @@
 import React, { Component, createContext } from 'react';
 import {
-    StyleSheet
-    , Text
-    , View
-    , ImageBackground
-    , TextInput
-    , Dimensions
-    , TouchableOpacity
-    , TouchableNativeFeedbackBase
-    , Alert
+    StyleSheet, Text, View, ImageBackground, TextInput,
+    Dimensions, TouchableOpacity, Alert
 } from 'react-native';
 import bgImage from '../assets/background.jpg';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -27,50 +20,65 @@ export default class SignUpPage extends Component {
         this.state = {
             showPass: true,
             press: false,
-            usersignupdata: [
-                {
-                    account: '06130106',
-                    password: 'paul0188'
-                },
-                {
-                    account: '06131722',
-                    password: '06131722'
-                }
-            ]
+            userSignUpData: [{
+                account: '06130106',
+                password: 'paul0188'
+            }, {
+                account: '06131722',
+                password: '06131722'
+            }]
         }
     }
 
     showPass = () => {
-        if (this.state.press == false) {
-            this.setState({ showPass: false, press: true })
+        if (this.state.press === false) {
+            this.setState({ showPass: false, press: true });
         } else {
-            this.setState({ showPass: true, press: false })
+            this.setState({ showPass: true, press: false });
         }
     }
-    SignupToLoginPage() {
-        const navigation = this.props.navigation;
+
+    directToLogInPage() {
+        const { username, userpwd, chkpwd, userSignUpData } = this.state;
+
+        if (!username || !userpwd || !chkpwd) {
+            Alert.alert('欄位不可為空');
+            this.setState({ username: '', userpwd: '' });
+            return;
+        } else if (userSignUpData.findIndex((d) =>
+            d.account === username) >= 0) {
+            Alert.alert('帳號已存在，請重新輸入');
+            this.setState({ username: '', userpwd: '' });
+            return;
+        } else if (userpwd !== chkpwd) {
+            Alert.alert('密碼不一致，請重新輸入');
+            this.setState({ username: '', userpwd: '' });
+            return;
+        }
+
+        const newData = userSignUpData.concat([{
+            account: username,
+            password: userpwd
+        }]);
 
         this.setState({
-            usersignupdata: this.state.usersignupdata.concat([{
-                account: this.state.username,
-                password: this.state.userpwd
-            }])
-        });//新增不了物件，但有讀到name和pwd
+            userSignUpData: newData
+        }); //新增不了物件，但有讀到name和pwd
 
+        const navigation = this.props.navigation;
         const resetAction = StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({
                 routeName: 'LogIn',
                 params: {
-                    account: this.state.username,
-                    password: this.state.userpwd
+                    logInData: newData
                 }
             })],
         });
         navigation.dispatch(resetAction);
 
         /* return (
-            <UserInfoContext.Provider value={this.state.usersignupdata} />
+            <UserInfoContext.Provider value={this.state.userSignUpData} />
         ); */
     }
 
@@ -86,6 +94,7 @@ export default class SignUpPage extends Component {
                             placeholder={'帳號'}
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
                             underlineColorAndroid='transparent'
+                            value={this.state.username}
                             onChangeText={(input) => this.setState({ username: input })}
                         />
                     </View>
@@ -98,9 +107,10 @@ export default class SignUpPage extends Component {
                             secureTextEntry={this.state.showPass}
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
                             underlineColorAndroid='transparent'
+                            value={this.state.userpwd}
                             onChangeText={(input) => this.setState({ userpwd: input })}
                         />
-                        <TouchableOpacity style={styles.buttonEye} onPress={this.showPass.bind(this)}>
+                        <TouchableOpacity style={styles.buttonEye} onPress={this.showPass}>
                             <Icon name={this.state.showPass == false ? 'ios-eye' : 'ios-eye-off'}
                                 size={26} color={'rgba(255,255,255,0.7)'} />
                         </TouchableOpacity>
@@ -114,22 +124,14 @@ export default class SignUpPage extends Component {
                             secureTextEntry={this.state.showPass}
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
                             underlineColorAndroid='transparent'
-                            onChangeText={(input) => {
-                                if (input != this.state.userpwd) {
-                                    Alert.alert('提示', '密碼錯誤', [
-                                        {
-                                            text: '重新輸入'
-                                        }
-                                    ]);
-                                }
-                            }}
+                            onChangeText={(input) => this.setState({ chkpwd: input })}
                         />
-                        <TouchableOpacity style={styles.buttonEye} onPress={this.showPass.bind(this)}>
-                            <Icon name={this.state.showPass == false ? 'ios-eye' : 'ios-eye-off'}
+                        <TouchableOpacity style={styles.buttonEye} onPress={this.showPass}>
+                            <Icon name={this.state.showPass === false ? 'ios-eye' : 'ios-eye-off'}
                                 size={26} color={'rgba(255,255,255,0.7)'} />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.buttonLogin} onPress={() => { this.SignupToLoginPage() }}>
+                    <TouchableOpacity style={styles.buttonLogin} onPress={() => this.directToLogInPage()}>
                         <Text style={styles.text}>註冊</Text>
                     </TouchableOpacity>
                 </ImageBackground>
