@@ -6,11 +6,13 @@ import {
     , ImageBackground
     , TextInput
     , Dimensions
-    , TouchableOpacity
+    , TouchableOpacity,
+    Alert
 } from 'react-native';
 import 'react-native-gesture-handler';
 import bgImage from '../assets/background.jpg'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { UserInfoContext } from './signUp'
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -35,8 +37,17 @@ export default class LoginPage extends Component {
         }
     }
 
+    /* getSignUpdata = () => {
+        <UserInfoContext.Consumer>
+            {({ usersignupdata }) => {
+                this.setState({})
+            }}
+        </UserInfoContext.Consumer>
+    } */
+
     render() {
         const { navigate } = this.props.navigation;
+        const data = this.props.navigation.state.params;
         return (
             <View style={{ backgroundColor: 'white', height: '100%' }}>
                 <ImageBackground source={bgImage} style={styles.backgroundContainer}>
@@ -48,6 +59,7 @@ export default class LoginPage extends Component {
                             placeholder={'帳號'}
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
                             underlineColorAndroid='transparent'
+                            onChangeText={(input) => this.setState({ loginname: input })}
                         />
                     </View>
                     <View style={[styles.inputContainer]}>
@@ -59,13 +71,28 @@ export default class LoginPage extends Component {
                             secureTextEntry={this.state.showPass}
                             placeholderTextColor={'rgba(255,255,255,0.7)'}
                             underlineColorAndroid='transparent'
+                            onChangeText={(input) => this.setState({ loginpwd: input })}
                         />
                         <TouchableOpacity style={styles.buttonEye} onPress={this.showPass.bind(this)}>
                             <Icon name={this.state.showPass == false ? 'ios-eye' : 'ios-eye-off'}
                                 size={26} color={'rgba(255,255,255,0.7)'} />
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.buttonLogin} onPress={() => navigate('AddDevice')}>
+                    <TouchableOpacity style={styles.buttonLogin} onPress={() => {
+                        if (this.state.loginname != data.account) {
+                            Alert.alert('錯誤訊息', '帳號輸入錯誤', [
+                                { text: '重新輸入' }
+                            ])
+                        }
+                        else if (this.state.loginpwd != data.password) {
+                            Alert.alert('錯誤訊息', '密碼輸入錯誤', [
+                                { text: '重新輸入' }
+                            ])
+                        }
+                        else {
+                            navigate('AddDevice')
+                        }
+                    }}>
                         <Text style={styles.text}>登入</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigate('SignUp')}>
