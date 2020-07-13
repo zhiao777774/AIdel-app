@@ -101,7 +101,9 @@ export class MessageDate extends React.Component {
     render() {
         return (
             <View>
-                <Text style={styles.dateString}>{this.props.date}</Text>
+                <Text style={[styles.dateString, this.props.style]}>
+                    {this.props.date}
+                </Text>
             </View>
         );
     }

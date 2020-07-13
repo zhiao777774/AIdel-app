@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Animated, Dimensions, Text, Image } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
-import MapView, { PROVIDER_GOOGLE, Marker, Callout } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker, Callout, Polyline } from 'react-native-maps';
 import BottomNavigation from './BottomNavigation';
 
 const HEIGHT = Dimensions.get('window').height;
@@ -18,6 +18,7 @@ export default class ContentView extends Component {
                 latitude: 24.9844926, longitude: 121.3401801
             },
             accidentMarker: undefined,
+            historicalMarker: undefined,
             region: undefined
         }
     }
@@ -51,6 +52,32 @@ export default class ContentView extends Component {
             region: {
                 latitude: location.latitude,
                 longitude: location.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01
+            }
+        });
+    }
+
+    locateHistoricalLocation = (locations) => {
+        if (!locations) return;
+
+        this.setState({
+            historicalMarker: locations.map((location, i) => (
+                <Marker coordinate={location}>
+                    <Text style={styles.markerText}>{i + 1}</Text>
+                    <Image source={require('../../assets/historical-marker.png')}
+                        style={styles.markerIcon} />
+                </Marker>
+            )).concat([
+                <Polyline
+                    coordinates={locations}
+                    strokeColor='#7F0000'
+                    strokeWidth={3}
+                />
+            ]),
+            region: {
+                latitude: locations[0].latitude,
+                longitude: locations[0].longitude,
                 latitudeDelta: 0.01,
                 longitudeDelta: 0.01
             }
@@ -100,9 +127,14 @@ export default class ContentView extends Component {
                                     </Callout>
                                 </Marker>
                                 {this.state.accidentMarker}
+                                {this.state.historicalMarker}
                             </MapView>
                         </Animated.View>
-                        <BottomNavigation toggle={this.toggle} locate={this.locateAccidentalPosition} />
+                        <BottomNavigation
+                            toggle={this.toggle}
+                            locateAccidental={this.locateAccidentalPosition}
+                            locateHistorical={this.locateHistoricalLocation}
+                        />
                     </View>
                 </NavigationContainer>
             </Animated.View>
