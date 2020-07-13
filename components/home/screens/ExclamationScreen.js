@@ -118,7 +118,7 @@ export default class ExclamationScreen extends React.Component {
     }
 
     locateItem = (listItem) => {
-        this.props.locate(listItem);
+        this.props.locateAccidental(listItem);
     }
 
     keyExtractor = (item, index) => index.toString();
