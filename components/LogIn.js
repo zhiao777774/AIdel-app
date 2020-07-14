@@ -6,7 +6,6 @@ import {
 import 'react-native-gesture-handler';
 import bgImage from '../assets/background.jpg'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { UserInfoContext } from './signUp'
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -19,8 +18,26 @@ export default class LoginPage extends Component {
         super(props);
         this.state = {
             showPass: true,
-            press: false
-        }
+            press: false,
+            accountData: []
+        };
+
+        mongoDB.get({
+            collection: 'account'
+        }, (accounts) => {
+            this.setState({ accountData: accounts });
+        });
+
+        //當使用者點擊返回按鈕回到此頁面時會觸發
+        this.props.navigation.addListener(
+            'willFocus', () => {
+                mongoDB.get({
+                    collection: 'account'
+                }, (accounts) => {
+                    this.setState({ accountData: accounts });
+                });
+            }
+        );
     }
 
     showPass = () => {
@@ -31,25 +48,17 @@ export default class LoginPage extends Component {
         }
     }
 
-    /* getSignUpdata = () => {
-        <UserInfoContext.Consumer>
-            {({ usersignupdata }) => {
-                this.setState({})
-            }}
-        </UserInfoContext.Consumer>
-    } */
-
     render() {
-        const { navigate, state } = this.props.navigation;
-        let logInData = state && state.params && state.params.logInData;
+        const { navigate } = this.props.navigation;
+        const { accountData } = this.state;
 
-        logInData = logInData ? logInData : [{
-            account: '06130106',
-            password: 'paul0188'
-        }, {
-            account: '06131722',
-            password: '06131722'
-        }];
+        if (!accountData) {
+            mongoDB.get({
+                collection: 'account'
+            }, (accounts) => {
+                this.setState({ accountData: accounts });
+            });
+        }
 
         return (
             <View style={{ backgroundColor: 'white', height: '100%' }}>
@@ -83,7 +92,7 @@ export default class LoginPage extends Component {
                     </View>
                     <TouchableOpacity style={styles.buttonLogin} onPress={() => {
                         let isPass = false;
-                        for (const d of logInData) {
+                        for (const d of accountData) {
                             if (d.account === this.state.loginname &&
                                 d.password === this.state.loginpwd) {
                                 isPass = true;

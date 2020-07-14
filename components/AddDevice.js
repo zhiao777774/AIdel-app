@@ -7,14 +7,12 @@ import {
     , Dimensions
     , TouchableOpacity
     , Alert
-    , Image
 } from 'react-native';
 import ListView from 'deprecated-react-native-listview';
 import 'react-native-gesture-handler';
 import { StackActions, NavigationActions } from 'react-navigation';
 import bgImage from '../assets/background2.jpg'
 import Row from './Row';
-
 
 const { width: WIDTH } = Dimensions.get('window');
 
@@ -27,19 +25,14 @@ export default class AddDevice extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            devicedata: [
-                {
-                    picture: 'http://120.125.83.10:90/assets/man.jpg',
-                    name: '王柏翰'
-                }, {
-                    picture: 'http://120.125.83.10:90/assets/man.jpg',
-                    name: '劉久銘'
-                }, {
-                    picture: 'http://120.125.83.10:90/assets/woman.jpg',
-                    name: '吳慧娟'
-                }
-            ]
+            devicedata: []
         }
+
+        mongoDB.get({
+            collection: 'device'
+        }, (devices) => {
+            this.setState({ devicedata: devices });
+        });
     }
 
     addNewDevice = () => {
@@ -52,22 +45,28 @@ export default class AddDevice extends Component {
                         {
                             text: '男',
                             onPress: () => {
-                                this.setState({
-                                    devicedata: this.state.devicedata.concat([{
+                                mongoDB.insert({
+                                    collection: 'device',
+                                    data: {
                                         picture: 'http://120.125.83.10:90/assets/man.jpg',
                                         name
-                                    }])
+                                    }
+                                }, (devices) => {
+                                    this.setState({ devicedata: devices });
                                 });
                             }
                         },
                         {
                             text: '女',
                             onPress: () => {
-                                this.setState({
-                                    devicedata: this.state.devicedata.concat([{
+                                mongoDB.insert({
+                                    collection: 'device',
+                                    data: {
                                         picture: 'http://120.125.83.10:90/assets/woman.jpg',
                                         name
-                                    }])
+                                    }
+                                }, (devices) => {
+                                    this.setState({ devicedata: devices });
                                 });
                             }
                         },
@@ -79,10 +78,6 @@ export default class AddDevice extends Component {
     }
 
     render() {
-        const devices = [];
-        const data = this.state.devicedata;
-        data.forEach(({ name, picture }) => devices.push({ picture, name }));
-
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
         const navigation = this.props.navigation;
 
@@ -94,7 +89,7 @@ export default class AddDevice extends Component {
                 <Text style={styles.line}>─────────  選擇現有設備  ─────────</Text>
                 <ListView
                     style={{ marginTop: 120, width: '80%' }}
-                    dataSource={ds.cloneWithRows(devices)}
+                    dataSource={ds.cloneWithRows(this.state.devicedata)}
                     renderRow={(data) => {
                         return (
                             <TouchableOpacity onPress={() => {
@@ -123,8 +118,12 @@ export default class AddDevice extends Component {
                                         {
                                             text: '確認',
                                             onPress: () => {
-                                                devicedata.splice(devicedata.findIndex((d) => d.name == data.name), 1);
-                                                this.setState({ devicedata });
+                                                mongoDB.delete({
+                                                    collection: 'device',
+                                                    filter: { _id: data._id }
+                                                }, (devices) => {
+                                                    this.setState({ devicedata: devices });
+                                                });
                                             }
                                         },
                                     ])

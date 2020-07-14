@@ -2,66 +2,22 @@ import React from 'react';
 import { FlatList, View, Alert, Linking } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
-import axios from 'axios';
 import screenStyle from './screenStyles';
 
 export default class ExclamationScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataList: [
-                {
-                    id: 1,
-                    date: '2020/07/09 20:45',
-                    type: '車禍',
-                    location: {
-                        address: '桃園市蘆竹區南崁路一段369號',
-                        latitude: 25.054930,
-                        longitude: 121.282248
-                    }
-                },
-                {
-                    id: 2,
-                    date: '2020/07/05 17:32',
-                    type: '摔倒',
-                    location: {
-                        address: '桃園市桃園區經國路369號',
-                        latitude: 25.016314,
-                        longitude: 121.305584
-                    }
-                },
-                {
-                    id: 3,
-                    date: '2020/06/25 08:12',
-                    type: '摔倒',
-                    location: {
-                        address: '新竹市東區中華路二段416號',
-                        latitude: 24.802064,
-                        longitude: 120.971729
-                    }
-                },
-                {
-                    id: 4,
-                    date: '2020/06/09 14:35',
-                    type: '摔倒',
-                    location: {
-                        address: '新竹市東區工業東二路1號',
-                        latitude: 24.7797876,
-                        longitude: 121.0033921
-                    }
-                },
-                {
-                    id: 5,
-                    date: '2020/06/01 16:05',
-                    type: '摔倒',
-                    location: {
-                        address: '台北市中山區林森北路159巷2號',
-                        latitude: 25.0503921,
-                        longitude: 121.5247055
-                    }
-                }
-            ]
+            accidentData: []
         };
+
+        mongoDB.trigger('get', 'historicalAccidentsRes', {
+            collection: 'historicalAccident'
+        }, (accidentData) => {
+            accidentData = accidentData.sort((a, b) =>
+                new Date(b.date).getTime() - new Date(a.date).getTime());
+            this.setState({ accidentData });
+        });
     }
 
     rightSwipeOutButtons = (item) => {
@@ -95,26 +51,24 @@ export default class ExclamationScreen extends React.Component {
         ];
     }
 
-    componentDidMount() {
-        /*axios.get('https://rickandmortyapi.com/api/character').then(response => {
-            this.setState({ dataList: response.data.results });
-        });*/
-    }
-
     removeItem = (listItem) => {
-        const dataList = this.state.dataList.filter(item => item != listItem);
-        this.setState({ dataList });
+        mongoDB.delete({
+            collection: 'historicalAccident',
+            filter: { _id: listItem._id }
+        }, (accidentData) => {
+            this.setState({ accidentData });
+        });
     }
 
     checkItem = (listItem) => {
-        const dataList = this.state.dataList.map(item => {
+        const accidentData = this.state.accidentData.map(item => {
             if (item === listItem) {
                 return { ...item, checkmark: true };
             } else {
                 return item;
             }
         });
-        this.setState({ dataList });
+        this.setState({ accidentData });
     }
 
     locateItem = (listItem) => {
@@ -158,7 +112,7 @@ export default class ExclamationScreen extends React.Component {
             }]}>
                 <FlatList
                     keyExtractor={this.keyExtractor}
-                    data={this.state.dataList}
+                    data={this.state.accidentData}
                     renderItem={this.renderItem}
                 />
             </View>
