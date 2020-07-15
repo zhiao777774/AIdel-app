@@ -49,6 +49,16 @@ class MongoDB {
         this._eventRoute('delete', query, callback);
     }
 
+    watch(setting, callback) {
+        this.connect();
+        this.socket.emit('watch', setting);
+
+        const { collection, event } = setting;
+        if (callback && this._isFunction(callback)) {
+            this.socket.on(event || `${collection}Changed`, callback);
+        }
+    }
+
     close(callback) {
         if (this.isOpen) {
             this.socket.close();
