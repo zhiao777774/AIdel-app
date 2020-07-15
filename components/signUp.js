@@ -20,14 +20,14 @@ export default class SignUpPage extends Component {
         this.state = {
             showPass: true,
             press: false,
-            userSignUpData: [{
-                account: '06130106',
-                password: 'paul0188'
-            }, {
-                account: '06131722',
-                password: '06131722'
-            }]
-        }
+            accountData: []
+        };
+
+        mongoDB.get({
+            collection: 'account'
+        }, (accounts) => {
+            this.setState({ accountData: accounts });
+        });
     }
 
     showPass = () => {
@@ -39,47 +39,41 @@ export default class SignUpPage extends Component {
     }
 
     directToLogInPage() {
-        const { username, userpwd, chkpwd, userSignUpData } = this.state;
+        const { username, userpwd, chkpwd, accountData } = this.state;
 
         if (!username || !userpwd || !chkpwd) {
             Alert.alert('欄位不可為空');
-            this.setState({ username: '', userpwd: '' });
+            this.setState({ username: '', userpwd: '', chkpwd: '' });
             return;
-        } else if (userSignUpData.findIndex((d) =>
+        } else if (accountData.findIndex((d) =>
             d.account === username) >= 0) {
             Alert.alert('帳號已存在，請重新輸入');
-            this.setState({ username: '', userpwd: '' });
+            this.setState({ username: '', userpwd: '', chkpwd: '' });
             return;
         } else if (userpwd !== chkpwd) {
             Alert.alert('密碼不一致，請重新輸入');
-            this.setState({ username: '', userpwd: '' });
+            this.setState({ username: '', userpwd: '', chkpwd: '' });
             return;
         }
 
-        const newData = userSignUpData.concat([{
-            account: username,
-            password: userpwd
-        }]);
-
-        this.setState({
-            userSignUpData: newData
-        }); //新增不了物件，但有讀到name和pwd
+        mongoDB.insert({
+            collection: 'account',
+            data: {
+                account: username,
+                password: userpwd
+            }
+        }, (accounts) => {
+            this.setState({ accountData: accounts });
+        });
 
         const navigation = this.props.navigation;
         const resetAction = StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({
-                routeName: 'LogIn',
-                params: {
-                    logInData: newData
-                }
+                routeName: 'LogIn'
             })],
         });
         navigation.dispatch(resetAction);
-
-        /* return (
-            <UserInfoContext.Provider value={this.state.userSignUpData} />
-        ); */
     }
 
     render() {

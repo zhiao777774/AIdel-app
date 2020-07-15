@@ -13,14 +13,18 @@ export default class ContentView extends Component {
         this.state = {
             expanded: true,
             viewHeight: new Animated.Value(HEIGHT * 0.46),
-            coordinate: {
-                date: '2020/07/08 11:30',
-                latitude: 24.9844926, longitude: 121.3401801
-            },
+            coordinate: {},
             accidentMarker: undefined,
             historicalMarker: undefined,
             region: undefined
-        }
+        };
+
+        mongoDB.get({
+            collection: 'historicalLocation'
+        }, (coordinates) => {
+            this.setState({ coordinate: coordinates[coordinates.length - 1] });
+            global.historicalCoords = coordinates;
+        });
     }
 
     toggle = () => {
@@ -95,7 +99,8 @@ export default class ContentView extends Component {
     }
 
     render() {
-        const coord = this.state.coordinate;
+        const coord = this.state.coordinate ||
+            global.historicalCoords[global.historicalCoords.length - 1];
 
         return (
             <Animated.View>
@@ -113,8 +118,8 @@ export default class ContentView extends Component {
                                 style={styles.mapContainer}
                                 minZoomLevel={7}
                                 region={this.state.region || {
-                                    latitude: this.state.coordinate.latitude,
-                                    longitude: this.state.coordinate.longitude,
+                                    latitude: coord.latitude,
+                                    longitude: coord.longitude,
                                     latitudeDelta: 0.01,
                                     longitudeDelta: 0.01
                                 }}
@@ -141,7 +146,6 @@ export default class ContentView extends Component {
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {

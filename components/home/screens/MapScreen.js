@@ -11,50 +11,9 @@ export default class MapScreen extends React.Component {
         this.mapRef = undefined;
         this.state = {
             showDate: false,
-            coordinates: [
-                {
-                    number: 0, date: '2020/07/08 10:00',
-                    latitude: 24.9844926, longitude: 121.3401801, showDate: false
-                },
-                {
-                    number: 1, date: '2020/07/08 10:10',
-                    latitude: 24.9844926, longitude: 121.3, showDate: false
-                },
-                {
-                    number: 2, date: '2020/07/08 10:20',
-                    latitude: 24.9994926, longitude: 121.2401801, showDate: false
-                },
-                {
-                    number: 3, date: '2020/07/08 10:30',
-                    latitude: 24.974926, longitude: 121.244, showDate: false
-                },
-                {
-                    number: 4, date: '2020/07/08 10:40',
-                    latitude: 24.934005, longitude: 121.2631801, showDate: false
-                },
-                {
-                    number: 5, date: '2020/07/08 10:50',
-                    latitude: 24.8844926, longitude: 121.3600801, showDate: false
-                },
-                {
-                    number: 6, date: '2020/07/08 11:00',
-                    latitude: 25, longitude: 121.4401801, showDate: false
-                },
-                {
-                    number: 7, date: '2020/07/08 11:10',
-                    latitude: 25.0058, longitude: 121.4741801, showDate: false
-                },
-                {
-                    number: 8, date: '2020/07/08 11:20',
-                    latitude: 25.05, longitude: 121.4951801, showDate: false
-                },
-                {
-                    number: 9, date: '2020/07/08 11:30',
-                    latitude: 25.09, longitude: 121.5051801, showDate: false
-                }
-            ],
+            coordinates: global.historicalCoords,
             mapRegion: undefined
-        }
+        };
     }
 
     /*renderMarkers = () => {
@@ -106,6 +65,7 @@ export default class MapScreen extends React.Component {
 
     render() {
         const coords = this.state.coordinates;
+        
         return (
             <View style={screenStyle.screen}>
                 <View style={styles.toolBarContainer}>

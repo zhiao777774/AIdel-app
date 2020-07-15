@@ -60,7 +60,6 @@ const TabBar = ({
                     };
 
                     const onLongPress = () => {
-                        console.log(label.toString());
                         toggle();
                     };
 
