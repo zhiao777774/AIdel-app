@@ -110,6 +110,15 @@ server.on('connection', (socket) => {
         _dbQuery(collection, query.event || 'deleteResult', socket);
     });
 
+    socket.on('watch', (setting) => {
+        const { collection, pipeline = [], options = {} } = setting;
+
+        dbo.collection(collection)
+            .watch(pipeline, options)
+            .on('change', (data) =>
+                socket.emit(setting.event || `${collection}Changed`, data));
+    });
+
     socket.on('disconnect', () => console.log(`socket disconnect id: ${socket.id}`));
 });
 
