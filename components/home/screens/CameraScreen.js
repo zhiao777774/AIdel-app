@@ -16,6 +16,14 @@ export default class CameraScreen extends React.Component {
         mongoDB.trigger('get', 'historicalImagesRes', {
             collection: 'historicalImage'
         }, (data) => {
+            data = data.map(({ _id, date, data }) => {
+                return {
+                    _id, date,
+                    data: data.sort((a, b) =>
+                        new Date(`${date} ${b.time}`).getTime() -
+                        new Date(`${date} ${a.time}`).getTime())
+                };
+            });
             this.setState({ data });
         });
     }
