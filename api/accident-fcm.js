@@ -26,12 +26,14 @@ export default class FCM {
             collection: 'historicalAccident'
         }, (data) => {
             console.log(data);
-            const { date, type, location } = data;
-            this._fcm({
-                title: '緊急!',
-                body: `${date}: 於${location.address} 疑似發生 ${type}`,
-                vibrate: true
-            });
+            if (data && data.operationType && data.operationType === 'insert') {
+                const { date, type, location } = data;
+                this._fcm({
+                    title: '緊急!',
+                    body: `${date}: 於${location.address} 疑似發生 ${type}`,
+                    vibrate: true
+                });
+            }
         });
     }
 
