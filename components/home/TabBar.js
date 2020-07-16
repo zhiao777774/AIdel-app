@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import {
-    View,
-    TouchableOpacity,
-    Dimensions,
-    Animated,
-    StyleSheet,
+    View, TouchableOpacity, Dimensions,
+    Animated, StyleSheet,
 } from 'react-native';
 import BottomMenuItem from './BottomMenuItem';
 
@@ -59,9 +56,7 @@ const TabBar = ({
                         }).start();
                     };
 
-                    const onLongPress = () => {
-                        toggle();
-                    };
+                    const onLongPress = () => toggle();
 
                     return (
                         <TouchableOpacity

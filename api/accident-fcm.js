@@ -30,8 +30,7 @@ export default class FCM {
                 this._fcm({
                     title: '緊急!',
                     body: `${date}: 於${location.address}疑似發生${type}事故`,
-                    vibrate: true,
-
+                    vibrate: true
                 });
             }
         });
