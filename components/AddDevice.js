@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet
-    , Text
-    , View
-    , ImageBackground
-    , Dimensions
-    , TouchableOpacity
-    , Alert
+    StyleSheet, Text, View, ImageBackground, 
+    Dimensions, TouchableOpacity, Alert
 } from 'react-native';
 import ListView from 'deprecated-react-native-listview';
 import 'react-native-gesture-handler';
@@ -17,7 +12,6 @@ import Row from './Row';
 const { width: WIDTH } = Dimensions.get('window');
 
 export default class AddDevice extends Component {
-
     static navigationOptions = {
         title: '選擇設備'
     };
@@ -78,7 +72,7 @@ export default class AddDevice extends Component {
     }
 
     render() {
-        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+        const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
         const navigation = this.props.navigation;
 
         return (

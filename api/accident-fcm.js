@@ -25,12 +25,11 @@ export default class FCM {
         mongoDB.watch({
             collection: 'historicalAccident'
         }, (data) => {
-            console.log(data);
             if (data && data.operationType && data.operationType === 'insert') {
-                const { date, type, location } = data;
+                const { date, type, location } = data.fullDocument;
                 this._fcm({
                     title: '緊急!',
-                    body: `${date}: 於${location.address} 疑似發生 ${type}`,
+                    body: `${date}: 於${location.address}疑似發生${type}事故`,
                     vibrate: true
                 });
             }
