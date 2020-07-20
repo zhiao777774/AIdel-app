@@ -10,23 +10,29 @@ const CarouselItem = ({ item }) => {
         source = {
             uri: item.url
         };
-    } else {
-        const uri = 'data:image/jpg;base64,' + new Buffer(item.image).toString('base64');
-        source = {
-            uri,
-            isStatic: true
-        };
-    }
-
-    return (
-        <View style={styles.cardView}>
-            <Image style={styles.image} source={source} />
-            <View style={styles.textView}>
-                <Text style={styles.itemTitle}> {item.title}</Text>
-                <Text style={styles.itemDescription}>{item.description}</Text>
+        return (
+            <View style={styles.cardView}>
+                <Image style={styles.image} source={source} />
+                <View style={styles.textView}>
+                    <Text style={styles.itemTitle}> {item.title}</Text>
+                    <Text style={styles.itemDescription}>{item.description}</Text>
+                </View>
             </View>
-        </View>
-    )
+        )
+    } else {
+        const uri = new Buffer(item.image, 'binary').toString('base64');
+        const Data = `data:image/jpeg;base64,${uri}`;
+
+        return (
+            <View style={styles.cardView}>
+                <Image style={styles.image} source={{ uri: Data, isStatic: true }} />
+                <View style={styles.textView}>
+                    <Text style={styles.itemTitle}> {item.title}</Text>
+                    <Text style={styles.itemDescription}>{item.description}</Text>
+                </View>
+            </View>
+        )
+    }
 }
 
 export default CarouselItem;
