@@ -1,38 +1,21 @@
-import React from 'react'
-import { View, StyleSheet, Text, Image, Dimensions } from 'react-native'
-import { Buffer } from 'buffer';
+import React from 'react';
+import { View, StyleSheet, Text, Image, Dimensions } from 'react-native';
 
-const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 const CarouselItem = ({ item }) => {
-    let source;
-    if (item.url) {
-        source = {
-            uri: item.url
-        };
-        return (
-            <View style={styles.cardView}>
-                <Image style={styles.image} source={source} />
-                <View style={styles.textView}>
-                    <Text style={styles.itemTitle}> {item.title}</Text>
-                    <Text style={styles.itemDescription}>{item.description}</Text>
-                </View>
+    return (
+        <View style={styles.cardView}>
+            <Image style={styles.image}
+                source={{
+                    uri: item.url || 'data:image/jpg;base64,' + item.image
+                }} />
+            <View style={styles.textView}>
+                <Text style={styles.itemTitle}> {item.title}</Text>
+                <Text style={styles.itemDescription}>{item.description}</Text>
             </View>
-        )
-    } else {
-        const uri = new Buffer(item.image, 'binary').toString('base64');
-        const Data = `data:image/jpeg;base64,${uri}`;
-
-        return (
-            <View style={styles.cardView}>
-                <Image style={styles.image} source={{ uri: Data, isStatic: true }} />
-                <View style={styles.textView}>
-                    <Text style={styles.itemTitle}> {item.title}</Text>
-                    <Text style={styles.itemDescription}>{item.description}</Text>
-                </View>
-            </View>
-        )
-    }
+        </View>
+    );
 }
 
 export default CarouselItem;
