@@ -16,7 +16,13 @@ export default class FCM {
             }),
         });
 
-        registerForPushNotificationsAsync().then(token => this.expoPushToken = token);
+        registerForPushNotificationsAsync().then(token => {
+            this.expoPushToken = token;
+            mongoDB.insert({
+                collection: 'userNotificationToken',
+                data: { token }  
+            });
+        });
         Notifications.addNotificationReceivedListener(notifi => this.notification = notifi);
         Notifications.addNotificationResponseReceivedListener(response => {
             console.log(response);
@@ -37,6 +43,10 @@ export default class FCM {
     }
 
     destroy() {
+        mongoDB.delete({
+          collection: 'userNotificationToken',
+          filter: { token: this.expoPushToken }  
+        });
         Notifications.removeAllNotificationListeners();
     }
 

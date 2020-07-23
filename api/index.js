@@ -115,8 +115,34 @@ server.on('connection', (socket) => {
 
         dbo.collection(collection)
             .watch(pipeline, options)
-            .on('change', (data) =>
-                socket.emit(setting.event || `${collection}Changed`, data));
+            .on('change', (data) => {
+                //socket.emit(setting.event || `${collection}Changed`, data);
+                if (data && data.operationType && data.operationType === 'insert') {
+                    const { date, type, location } = data.fullDocument;
+
+                    dbo.collection('userNotificationToken').find({})
+                        .toArray((err, tokens) => {
+                            if (err) throw err;
+
+                            console.log(tokens);
+                            tokens.forEach((token) => {
+                                fetch('https://exp.host/--/api/v2/push/send', {
+                                    method: 'POST',
+                                    headers: {
+                                        Accept: 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        to: `ExponentPushToken[${token}]`,
+                                        title: '緊急!',
+                                        body: `${date}: 於${location.address}疑似發生${type}事故`,
+                                        vibrate: true
+                                    })
+                                });
+                            })
+                        });
+                }
+            });
     });
 
     socket.on('disconnect', () => console.log(`socket disconnect id: ${socket.id}`));
