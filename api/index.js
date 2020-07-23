@@ -1,6 +1,7 @@
-const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
-const io = require('socket.io');
+import mongodb from 'mongodb';
+const { MongoClient, ObjectId } = mongodb;
+import socketIO from 'socket.io';
+const { listen } = socketIO;
 
 const ip = '120.125.83.10';
 const dbPort = '27017';
@@ -18,7 +19,7 @@ MongoClient.connect(`mongodb://${ip}:${dbPort}`, (err, client) => {
     console.log(`connect to ${dbName} successfully!`);
 });
 
-const server = io.listen(socketPort);
+const server = listen(socketPort);
 server.on('connection', (socket) => {
     console.log(`socket connect id: ${socket.id}`);
 
@@ -65,7 +66,7 @@ server.on('connection', (socket) => {
         const col = dbo.collection(collection);
 
         if (filter._id) {
-            filter._id = new mongodb.ObjectId(filter._id)
+            filter._id = new ObjectId(filter._id)
         }
 
         if (muti) {
@@ -92,7 +93,7 @@ server.on('connection', (socket) => {
         const col = dbo.collection(collection);
 
         if (filter._id) {
-            filter._id = new mongodb.ObjectId(filter._id)
+            filter._id = new ObjectId(filter._id)
         }
 
         if (muti) {
@@ -115,34 +116,8 @@ server.on('connection', (socket) => {
 
         dbo.collection(collection)
             .watch(pipeline, options)
-            .on('change', (data) => {
-                //socket.emit(setting.event || `${collection}Changed`, data);
-                if (data && data.operationType && data.operationType === 'insert') {
-                    const { date, type, location } = data.fullDocument;
-
-                    dbo.collection('userNotificationToken').find({})
-                        .toArray((err, tokens) => {
-                            if (err) throw err;
-
-                            console.log(tokens);
-                            tokens.forEach((token) => {
-                                fetch('https://exp.host/--/api/v2/push/send', {
-                                    method: 'POST',
-                                    headers: {
-                                        Accept: 'application/json',
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify({
-                                        to: `ExponentPushToken[${token}]`,
-                                        title: '緊急!',
-                                        body: `${date}: 於${location.address}疑似發生${type}事故`,
-                                        vibrate: true
-                                    })
-                                });
-                            })
-                        });
-                }
-            });
+            .on('change', (data) =>
+                socket.emit(setting.event || `${collection}Changed`, data));
     });
 
     socket.on('disconnect', () => console.log(`socket disconnect id: ${socket.id}`));
@@ -155,7 +130,7 @@ process.on('SIGINT', () => {
 });
 
 function _isObject(obj) {
-    return obj && obj != null && obj.constructor == Object;
+    return obj && obj !== null && obj.constructor === Object;
 }
 
 function _dbQuery(collection, event, socket) {
