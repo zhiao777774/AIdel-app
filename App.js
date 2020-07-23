@@ -16,7 +16,7 @@ export default class App extends React.Component {
         this.fcm.enable();
     }
 
-    componentWillUnmount() {
+    ComponentDidUnMount() {
         this.fcm.destroy();
     }
 

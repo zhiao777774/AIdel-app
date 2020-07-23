@@ -43,10 +43,12 @@ export default class FCM {
     }
 
     destroy() {
+        console.log(`token ${this.expoPushToken} deleted`);
         mongoDB.delete({
           collection: 'userNotificationToken',
           filter: { token: this.expoPushToken }  
         });
+        
         Notifications.removeAllNotificationListeners();
     }
 
