@@ -122,30 +122,15 @@ io.on('connection', (socket) => {
 
         dbo.collection(collection)
             .watch(pipeline, options)
-            .on('change', async (data) => {
+            .on('change', (data) => {
                 if (data && data.operationType && data.operationType === 'insert') {
-                    const { date, type, location } = data.fullDocument;
-
                     dbo.collection('userNotificationToken')
                         .find({}).toArray((err, tokens) => {
                             if (err) throw err;
 
                             console.log(tokens);
                             tokens.forEach(({ token }) => {
-                                await fetch('https://exp.host/--/api/v2/push/send', {
-                                    method: 'POST',
-                                    headers: {
-                                        Accept: 'application/json',
-                                        'Accept-encoding': 'gzip, deflate',
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        to: String(token),
-                                        title: '緊急!',
-                                        body: `${date}: 於${location.address}疑似發生${type}事故`,
-                                        vibrate: true
-                                    }),
-                                });
+                                _push_notification(token, data.fullDocument);
                             })
                         });
                 }
@@ -172,3 +157,21 @@ function _dbQuery(collection, event, socket) {
             socket.emit(event, data);
         });
 }
+
+async function _push_notification(token, data) {
+    const { date, type, location } = data;
+    await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Accept-encoding': 'gzip, deflate',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            to: String(token),
+            title: '緊急!',
+            body: `${date}: 於${location.address}疑似發生${type}事故`,
+            vibrate: true
+        }),
+    });
+} 
