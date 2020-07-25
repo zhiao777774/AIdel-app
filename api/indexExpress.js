@@ -124,14 +124,19 @@ io.on('connection', (socket) => {
             .watch(pipeline, options)
             .on('change', (data) => {
                 if (data && data.operationType && data.operationType === 'insert') {
+                    const { date, location, type } = data.fullDocument;
+
                     dbo.collection('userNotificationToken')
                         .find({}).toArray((err, tokens) => {
                             if (err) throw err;
 
                             console.log(tokens);
-                            tokens.forEach(({ token }) => {
-                                _push_notification(token, data.fullDocument);
-                            })
+                            _push_notification({
+                                to: tokens.map(({ token }) => String(token)),
+                                title: '緊急!',
+                                body: `${date}: 於${location.address}疑似發生${type}事故`,
+                                vibrate: true
+                            });
                         });
                 }
             });
@@ -158,8 +163,7 @@ function _dbQuery(collection, event, socket) {
         });
 }
 
-async function _push_notification(token, data) {
-    const { date, type, location } = data;
+async function _push_notification(pushData) {
     await fetch('https://exp.host/--/api/v2/push/send', {
         method: 'POST',
         headers: {
@@ -167,13 +171,9 @@ async function _push_notification(token, data) {
             'Accept-encoding': 'gzip, deflate',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            to: String(token),
-            title: '緊急!',
-            body: `${date}: 於${location.address}疑似發生${type}事故`,
-            vibrate: true
-        }),
+        body: JSON.stringify(pushData)
     })
-    .then((res) => res.json())
-    .catch((err) => console.err(err));
+        .then((res) => res.json())
+        .then((data) => console.log('push notification successfully.'))
+        .catch((err) => console.log(err));
 } 
