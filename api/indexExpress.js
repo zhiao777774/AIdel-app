@@ -173,5 +173,7 @@ async function _push_notification(token, data) {
             body: `${date}: 於${location.address}疑似發生${type}事故`,
             vibrate: true
         }),
-    });
+    })
+    .then((res) => res.json())
+    .catch((err) => console.err(err));
 } 
