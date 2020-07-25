@@ -70,7 +70,7 @@ async function sendPushNotification(expoPushToken, message) {
             'Accept-encoding': 'gzip, deflate',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(message),
+        body: JSON.stringify(message)
     });
 }
 
